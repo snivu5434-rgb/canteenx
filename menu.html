@@ -1,0 +1,194 @@
+ <!DOCTYPE html>
+<html>
+<head>
+
+<title>Menu</title>
+
+<style>
+body{
+  font-family: Arial;
+  background:#bbd5f7;
+}
+
+h2{
+  text-align:center;
+}
+
+.category{
+  background:rgb(147, 177, 235);
+  margin:10px;
+  padding:15px;
+  border-radius:10px;
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.items{
+  display:none;
+  margin:0 10px;
+}
+
+.item{
+  display:flex;
+  justify-content:space-between;
+  padding:10px;
+  border-bottom:1px solid #581fb3;
+}
+
+button{
+  margin-left:5px;
+}
+
+.totalBox{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  background:rgb(168, 216, 168);
+  padding:15px;
+  border-top:2px solid #e4e2e2;
+  text-align:center;
+}
+
+.confirm{
+  background:rgb(48, 206, 48);
+  color:rgb(7, 4, 7);
+  padding:10px 20px;
+  border:none;
+  border-radius:8px;
+}
+
+/* PLUS button */
+.controls button:first-child{
+  background-color: #28a745;
+  color: white;
+  border: none;
+}
+
+/* MINUS button */
+.controls button:last-child{
+  background-color: #dc3545;
+  color: white;
+  border: none;
+}
+
+/* MESSAGE */
+#msgBox{
+  display:none;
+  background:red;
+  color:white;
+  padding:10px;
+  text-align:center;
+  margin:10px;
+  border-radius:8px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h2>MENU</h2>
+
+<!-- MESSAGE -->
+<div id="msgBox"></div>
+
+<!-- SNACKS -->
+<div class="category" onclick="toggle('snacks')">
+  Snacks <span id="arrow-snacks">⬇️</span>
+</div>
+
+<div id="snacks" class="items">
+
+<div class="item">
+Tea ₹12
+<div class="controls">
+<button onclick="add('Tea',12)">+</button>
+<button onclick="remove('Tea',12)">-</button>
+</div>
+</div>
+
+<div class="item">
+Coffee ₹15
+<div class="controls">
+<button onclick="add('Coffee',15)">+</button>
+<button onclick="remove('Coffee',15)">-</button>
+</div>
+</div>
+
+<div class="item">
+Samosa ₹10
+<div class="controls">
+<button onclick="add('Samosa',10)">+</button>
+<button onclick="remove('Samosa',10)">-</button>
+</div>
+</div>
+
+<div class="item">
+Cutlet ₹20
+<div class="controls">
+<button onclick="add('Cutlet',20)">+</button>
+<button onclick="remove('Cutlet',20)">-</button>
+</div>
+</div>
+
+<div class="item">
+Bajji ₹15
+<div class="controls">
+<button onclick="add('Bajji',15)">+</button>
+<button onclick="remove('Bajji',15)">-</button>
+</div>
+</div>
+
+</div>
+
+<!-- BREAKFAST -->
+<div class="category" onclick="toggle('breakfast')">
+  Breakfast <span id="arrow-breakfast">⬇️</span>
+</div>
+
+<div id="breakfast" class="items">
+
+<div class="item">Idli ₹30 <div class="controls"><button onclick="add('Idli',30)">+</button><button onclick="remove('Idli',30)">-</button></div></div>
+
+<div class="item">Dosa ₹40 <div class="controls"><button onclick="add('Dosa',40)">+</button><button onclick="remove('Dosa',40)">-</button></div></div>
+
+<div class="item">Vadai ₹15 <div class="controls"><button onclick="add('Vadai',15)">+</button><button onclick="remove('Vadai',15)">-</button></div></div>
+
+<div class="item">Pongal ₹40 <div class="controls"><button onclick="add('Pongal',40)">+</button><button onclick="remove('Pongal',40)">-</button></div></div>
+
+<div class="item">Milk ₹25 <div class="controls"><button onclick="add('Milk',25)">+</button><button onclick="remove('Milk',25)">-</button></div></div>
+
+</div>
+
+<!-- LUNCH -->
+<div class="category" onclick="toggle('lunch')">
+  Lunch <span id="arrow-lunch">⬇️</span>
+</div>
+
+<div id="lunch" class="items">
+
+<div class="item">Chicken Biryani ₹120 <div class="controls"><button onclick="add('Chicken Biryani',120)">+</button><button onclick="remove('Chicken Biryani',120)">-</button></div></div>
+
+<div class="item">Mutton Biryani ₹150 <div class="controls"><button onclick="add('Mutton Biryani',150)">+</button><button onclick="remove('Mutton Biryani',150)">-</button></div></div>
+
+<div class="item">Chicken Rice ₹90 <div class="controls"><button onclick="add('Chicken Rice',90)">+</button><button onclick="remove('Chicken Rice',90)">-</button></div></div>
+
+<div class="item">Sambar Rice ₹50 <div class="controls"><button onclick="add('Sambar Rice',50)">+</button><button onclick="remove('Sambar Rice',50)">-</button></div></div>
+
+</div>
+
+<!-- TOTAL -->
+<div class="totalBox">
+
+<h3>Total: ₹<span id="total">0</span></h3>
+
+<button class="confirm" onclick="confirmOrder()">Confirm Order</button>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

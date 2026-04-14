@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cancel Order</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #b7dcf1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .box {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 420px;
+      text-align: center;
+    }
+
+    h2 {
+      color: red;
+    }
+
+    .info {
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .refundBox {
+      background: #dbcdcd;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 10px;
+    }
+
+    #msg {
+      margin-top: 15px;
+      color: green;
+      font-weight: bold;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 30px;
+      background: rgb(240, 175, 213);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+
+  <h2>❌ ORDER CANCELLED</h2>
+
+  <div class="refundBox" id="refundBox"></div>
+
+  <div id="msg"></div>
+
+  <button onclick="goHome()">🏠 BACK TO HOME</button>
+
+</div>
+
+<script>
+  /* ================== CANCEL SCRIPT (JS) ================== */
+
+  // 1. localStorage → "history" array லேந்து கடைசி ஆர்டர் தரகளைப் பயன்படுத்துறோம்
+  let history = JSON.parse(localStorage.getItem("history")) || [];
+  let lastOrder = history[history.length - 1] || {};
+
+  // 2. அந்த lastOrder ல இருக்கும் amount தான் ரியல் total amount
+  //    (எ.கா ₹12 / ₹100 / ₹300 – எவ்வளவாலும்!)
+  let amount = Number(lastOrder.amount) || 0;
+
+  // 3. 5% fee கணக்கு பண்ணுறோம்
+  let fee = amount * 0.05;
+  let refund = amount - fee;
+
+  /* ================== REFUND DATA SHOW ================== */
+  document.getElementById("refundBox").innerHTML =
+    "Amount: ₹" + amount + "<br>" +
+    "Fee (5%): ₹" + fee.toFixed(2) + "<br>" +
+    "<b>Refund: ₹" + refund.toFixed(2) + "</b>";
+
+  /* ================== ANIMATION MESSAGE ================== */
+  setTimeout(() => {
+    document.getElementById("msg").innerText =
+      "✅ Amount will be credited...";
+  }, 3000);
+
+  /* ================== BACK TO HOME ================== */
+  function goHome() {
+    window.location.href = "index.html";
+  }
+
+  src="cancel.js"
+
+
+<script>
+  showCancelRefund();
+</script>
+
+</script>
+
+</body>
+</html>

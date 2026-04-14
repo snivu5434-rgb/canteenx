@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Reset Password</title>
+
+<style>
+body{
+  font-family: Arial;
+  text-align:center;
+  background:#bbecf5;
+}
+
+.box{
+  margin-top:50px;
+}
+
+input{
+  padding:10px;
+  margin:10px;
+  width:220px;
+}
+
+button{
+  padding:10px 20px;
+  background:green;
+  color:white;
+  border:none;
+  border-radius:8px;
+}
+
+#timer{
+  color:red;
+  font-size:14px;
+}
+
+.success{
+  color:green;
+}
+.error{
+  color:red;
+}
+</style>
+
+</head>
+
+<body>
+
+<h2>OTP Password Reset</h2>
+
+<div class="box">
+
+<input type="text" id="reg" placeholder="Enter Register ID"><br>
+
+<button onclick="sendOTP()">Send OTP</button>
+
+<br><br>
+
+<input type="text" id="otpInput" placeholder="Enter OTP"><br>
+
+<p id="timer"></p>
+
+<button onclick="verifyOTP()">Verify OTP</button>
+
+<br><br>
+
+<input type="password" id="newPass" placeholder="New Password" disabled><br>
+<input type="password" id="confirmPass" placeholder="Confirm Password" disabled><br>
+
+<button onclick="resetPassword()" id="submitBtn" disabled>Submit</button>
+
+<p id="msg"></p>
+
+</div>
+
+<script>
+
+let generatedOTP = "";
+let time = 60;
+let timerInterval;
+
+// SEND OTP
+function sendOTP(){
+
+  let id = document.getElementById("reg").value;
+
+  if(id == ""){
+    document.getElementById("msg").innerText = "❌ Enter Register ID";
+    return;
+  }
+
+  generatedOTP = Math.floor(1000 + Math.random()*9000);
+
+  document.getElementById("msg").innerText = "📩 Your OTP: " + generatedOTP;
+
+  startTimer();
+}
+
+// TIMER
+function startTimer(){
+  time = 60;
+
+  clearInterval(timerInterval);
+
+  timerInterval = setInterval(()=>{
+    time--;
+
+    document.getElementById("timer").innerText = "⏳ Time left: " + time + " sec";
+
+    if(time <= 0){
+      clearInterval(timerInterval);
+      document.getElementById("timer").innerText = "❌ OTP Expired";
+    }
+
+  },1000);
+}
+
+// VERIFY OTP
+function verifyOTP(){
+
+  let userOTP = document.getElementById("otpInput").value;
+
+  if(userOTP == generatedOTP && time > 0){
+
+    // 🔥 ONLY FIX: STOP TIMER
+    clearInterval(timerInterval);
+
+    // 🔥 ONLY FIX: HIDE TIMER
+    document.getElementById("timer").innerText = "";
+
+    document.getElementById("msg").innerText = "✅ OTP Verified";
+    document.getElementById("msg").className = "success";
+
+    document.getElementById("newPass").disabled = false;
+    document.getElementById("confirmPass").disabled = false;
+    document.getElementById("submitBtn").disabled = false;
+
+  } else {
+    document.getElementById("msg").innerText = "❌ Invalid or Expired OTP";
+    document.getElementById("msg").className = "error";
+  }
+}
+
+// RESET PASSWORD
+function resetPassword(){
+
+  let id = document.getElementById("reg").value;
+  let newPass = document.getElementById("newPass").value;
+  let confirm = document.getElementById("confirmPass").value;
+
+  if(newPass !== confirm){
+    document.getElementById("msg").innerText = "❌ Password not match";
+    return;
+  }
+
+  let user = {
+    id: id,
+    password: newPass
+  };
+
+  localStorage.setItem(id, JSON.stringify(user));
+
+  document.getElementById("msg").innerText = "✅ Your password is updated successfully";
+  document.getElementById("msg").className = "success";
+
+  setTimeout(()=>{
+    window.location.href = "index.html";
+  },2000);
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+
+<style>
+body{
+  font-family: Arial;
+  text-align:center;
+  background:#bbe2f1;
+}
+
+.container{
+  margin-top:50px;
+}
+
+.tab{
+  display:inline-block;
+  padding:10px 20px;
+  background:#ddd;
+  cursor:pointer;
+}
+
+.active{
+  background:green;
+  color:white;
+}
+
+.box{
+  margin-top:20px;
+}
+
+input{
+  padding:10px;
+  margin:8px;
+  width:200px;
+}
+
+button{
+  padding:10px 20px;
+  margin-top:10px;
+  background:green;
+  color:white;
+  border:none;
+  border-radius:8px;
+}
+
+.error{
+  color:red;
+}
+
+.success{
+  color:green;
+}
+</style>
+
+</head>
+
+<body>
+
+<h2> Canteen Login</h2>
+
+<div class="container">
+
+<!-- TABS -->
+<div>
+  <span class="tab active" onclick="showTab('student')">Student</span>
+  <span class="tab" onclick="showTab('staff')">Staff</span>
+</div>
+
+<!-- STUDENT -->
+<div id="studentBox" class="box">
+  <input type="text" id="stuReg" placeholder="Register Number"><br>
+  <input type="password" id="stuPass" placeholder="Password"><br>
+
+  <button onclick="loginStudent()">Login</button><br>
+
+  <p onclick="goForget()" style="cursor:pointer;">Forgot Password?</p>
+
+  <p id="stuMsg"></p>
+</div>
+
+<!-- STAFF -->
+<div id="staffBox" class="box" style="display:none;">
+  <input type="text" id="staffId" placeholder="Staff ID"><br>
+  <input type="password" id="staffPass" placeholder="Password"><br>
+
+  <button onclick="loginStaff()">Login</button><br>
+
+  <p onclick="goForget()" style="cursor:pointer;">Forgot Password?</p>
+
+  <p id="staffMsg"></p>
+</div>
+
+</div>
+
+<script>
+
+// TAB SWITCH
+function showTab(type){
+  document.getElementById("studentBox").style.display = (type=="student")?"block":"none";
+  document.getElementById("staffBox").style.display = (type=="staff")?"block":"none";
+
+  let tabs = document.getElementsByClassName("tab");
+  for(let t of tabs) t.classList.remove("active");
+
+  event.target.classList.add("active");
+}
+
+// LOGIN STUDENT
+function loginStudent(){
+  let id = document.getElementById("stuReg").value;
+  let pass = document.getElementById("stuPass").value;
+
+  let saved = JSON.parse(localStorage.getItem(id));
+
+  if(saved && saved.password == pass){
+    window.location.href = "menu.html";
+  } else {
+    document.getElementById("stuMsg").innerText = "❌ Incorrect Password";
+    document.getElementById("stuMsg").className = "error";
+  }
+}
+
+// LOGIN STAFF
+function loginStaff(){
+  let id = document.getElementById("staffId").value;
+  let pass = document.getElementById("staffPass").value;
+
+  let saved = JSON.parse(localStorage.getItem(id));
+
+  if(saved && saved.password == pass){
+    window.location.href = "menu.html";
+  } else {
+    document.getElementById("staffMsg").innerText = "❌ Incorrect Password";
+    document.getElementById("staffMsg").className = "error";
+  }
+}
+
+// FORGET PAGE
+function goForget(){
+  window.location.href = "forget.html";
+}
+
+</script>
+
+</body>
+</html>

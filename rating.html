@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Smart Rating</title>
+
+<style>
+body{
+  font-family:Arial;
+  background:#bed1f5;
+  text-align:center;
+  margin:0;
+}
+
+.box{
+  max-width:500px;
+  margin:40px auto;
+  background:rgb(236, 232, 232);
+  padding:20px;
+  border-radius:15px;
+}
+
+.stars span{
+  font-size:45px;
+  cursor:pointer;
+  margin:5px;
+}
+
+#emoji{
+  font-size:55px;
+  margin:10px;
+}
+
+#comment{
+  margin-top:15px;
+  font-size:18px;
+  font-weight:bold;
+}
+
+textarea{
+  width:90%;
+  height:90px;
+  margin-top:10px;
+  border-radius:10px;
+  padding:10px;
+}
+
+button{
+  margin-top:15px;
+  padding:12px 25px;
+  background:rgb(81, 209, 81);
+  color:white;
+  border:none;
+  border-radius:25px;
+  cursor:pointer;
+}
+
+/* feedback message */
+#msg{
+  margin-top:15px;
+  font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+<h2>Rate Your Experience</h2>
+
+<div id="emoji">🙂</div>
+
+<div class="stars">
+  <span onclick="rate(1)">⭐</span>
+  <span onclick="rate(2)">⭐</span>
+  <span onclick="rate(3)">⭐</span>
+  <span onclick="rate(4)">⭐</span>
+  <span onclick="rate(5)">⭐</span>
+</div>
+
+<div id="comment"></div>
+
+<textarea id="feedback" placeholder="Write your feedback...(optional)"></textarea>
+
+<br>
+
+<button onclick="submitRating()">SUBMIT</button>
+
+<div id="msg"></div>
+
+</div>
+
+<script>
+
+let rating = 0;
+
+/* ---------------- RATING LOGIC ---------------- */
+
+function rate(val){
+  rating = val;
+
+  let emoji = "";
+  let text = "";
+
+  if(val === 1){
+    emoji = "😡";
+    text = "We are sorry 😔 Please improve next time";
+  }
+  else if(val === 2){
+    emoji = "😢";
+    text = "Sorry for bad experience, we will improve";
+  }
+  else if(val === 3){
+    emoji = "🙂";
+    text = "Okay experience, we will do better";
+  }
+  else if(val === 4){
+    emoji = "😄";
+    text = "Good! Thanks for your feedback";
+  }
+  else if(val === 5){
+    emoji = "😍";
+    text = "Excellent! Thank you so much ❤️";
+  }
+
+  document.getElementById("emoji").innerText = emoji;
+  document.getElementById("comment").innerText = "You selected " + val + " Star ⭐";
+  document.getElementById("msg").innerText = text;
+}
+
+/* ---------------- SUBMIT ---------------- */
+
+function submitRating(){
+
+  if(rating === 0){
+    document.getElementById("msg").innerText =
+      "😢 Please select rating before submit";
+    return;
+  }
+
+  let feedback = document.getElementById("feedback").value;
+
+  let data = {
+    rating: rating,
+    feedback: feedback,
+    time: new Date().toLocaleString()
+  };
+
+  let reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+  reviews.push(data);
+  localStorage.setItem("reviews", JSON.stringify(reviews));
+
+  document.getElementById("msg").innerText =
+    "⏳ Thank you for your feedback...";
+
+  setTimeout(()=>{
+    window.location.href = "thankyou.html";
+  },1000);
+}
+
+</script>
+
+</body>
+</html>

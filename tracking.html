@@ -1,0 +1,272 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <title>Tracking</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #b7d1f7;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .step {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      margin: 10px auto;
+      background: white;
+      border-radius: 10px;
+      max-width: 500px;
+    }
+
+    .step img {
+      width: 40px;
+    }
+
+    .orange {
+      background: #ffd7a8;
+    }
+
+    .green {
+      background: #bfffc2;
+    }
+
+    .info {
+      background: white;
+      padding: 15px;
+      margin: 20px auto;
+      border-radius: 10px;
+      max-width: 500px;
+    }
+
+    /* 🔴 MESSAGE BOX */
+    #messageBox {
+      display: none;
+      background: #ffe3e3;
+      color: #b30000;
+      padding: 10px;
+      margin: 10px auto;
+      max-width: 500px;
+      border-radius: 8px;
+      position: relative;
+      font-weight: bold;
+    }
+
+    #messageBox span {
+      position: absolute;
+      right: 10px;
+      cursor: pointer;
+    }
+
+    /* BUTTON (BASE) */
+    .btn {
+      margin-top: 20px;
+      width: 90%;
+      max-width: 500px;
+      padding: 15px;
+      background: green;
+      color: white;
+      border: none;
+      font-size: 18px;
+      display: none;
+    }
+
+    /* ---------------- NEW BUTTONS: OVAL, LEFT–RIGHT ---------------- */
+
+    /* WRAPPER for both buttons */
+    .btn-wrapper {
+      display: flex;
+      justify-content: space-between;
+      width: 90%;
+      max-width: 500px;
+      margin: 20px auto;
+      gap: 10px;
+    }
+
+    /* COLLECTED BUTTON (LEFT, GREEN, OVAL) */
+    .collect-btn {
+      margin-top: 0;
+      background: #00a800;
+      color: white;
+      border: none;
+      font-size: 18px;
+      border-radius: 50px;
+      padding: 12px 0;
+      flex: 1;
+      display: inline-block;
+    }
+
+    /* CANCEL BUTTON (RIGHT, RED, OVAL) */
+    .cancel-btn {
+      margin-top: 0;
+      background: #d90000;
+      color: white;
+      border: none;
+      font-size: 18px;
+      border-radius: 50px;
+      padding: 12px 0;
+      flex: 1;
+      display: inline-block;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>ORDER TRACKING</h2>
+
+<!-- 🔴 MESSAGE BOX -->
+<div id="messageBox">
+  <span onclick="closeMsg()">❌</span>
+  <div id="msgText"></div>
+</div>
+
+<div class="step" id="cook">
+  <span>🍳 Cooking</span>
+  <img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png">
+</div>
+
+<div class="step" id="prep">
+  <span>👨‍🍳 Preparing</span>
+  <img src="https://cdn-icons-png.flaticon.com/512/1046/1046869.png">
+</div>
+
+<div class="step" id="ready">
+  <span>🍽 Ready</span>
+  <img src="https://cdn-icons-png.flaticon.com/512/1046/1046786.png">
+</div>
+
+<div class="step" id="collect">
+  <span>📦 Collect Now</span>
+  <img src="https://cdn-icons-png.flaticon.com/512/833/833314.png">
+</div>
+
+<div class="info" id="infoBox"></div>
+
+<!-- BUTTON WRAPPER: LEFT COLLECTED + RIGHT CANCEL (OVAL, GREEN + RED) -->
+<div class="btn-wrapper">
+  <!-- COLLECTED BUTTON (LEFT, GREEN, OVAL) -->
+  <button class="btn collect-btn" id="collectBtn" onclick="collectOrder()">
+    COLLECTED DONE
+  </button>
+
+  <!-- CANCEL BUTTON (RIGHT, RED, OVAL) -->
+  <button class="btn cancel-btn" id="cancelBtn" onclick="cancelOrder()">
+    CANCEL ORDER
+  </button>
+</div>
+
+
+<script>
+/* ---------------- MESSAGE SYSTEM ---------------- */
+function showMsg(text) {
+  document.getElementById("messageBox").style.display = "block";
+  document.getElementById("msgText").innerText = text;
+}
+
+function closeMsg() {
+  document.getElementById("messageBox").style.display = "none";
+}
+
+/* ---------------- ORDER DATA ---------------- */
+let orderReady = false;
+
+let order = {
+  id: "ORD" + Math.floor(10000 + Math.random() * 90000),
+  amount: Number(localStorage.getItem("totalAmount")) || 0,
+  date: new Date().toLocaleDateString(),
+  time: new Date().toLocaleTimeString()
+};
+
+// HISTORY STORE
+let history = JSON.parse(localStorage.getItem("history")) || [];
+history.push(order);
+localStorage.setItem("history", JSON.stringify(history));
+
+document.getElementById("infoBox").innerHTML =
+`
+<h3>ORDER ID: ${order.id}</h3>
+<p>Date: ${order.date}</p>
+<p>Time: ${order.time}</p>
+<p>Amount: ₹${order.amount}</p>
+`;
+
+/* ---------------- FLOW ---------------- */
+function stepGreen(id) {
+  document.getElementById(id).classList.remove("orange");
+  document.getElementById(id).classList.add("green");
+}
+
+// Cooking
+setTimeout(() => document.getElementById("cook").classList.add("orange"), 1000);
+setTimeout(() => stepGreen("cook"), 4000);
+
+// Preparing
+setTimeout(() => document.getElementById("prep").classList.add("orange"), 5000);
+setTimeout(() => stepGreen("prep"), 8000);
+
+// Ready
+setTimeout(() => document.getElementById("ready").classList.add("orange"), 9000);
+setTimeout(() => stepGreen("ready"), 12000);
+
+// Collect Now
+setTimeout(() => {
+  document.getElementById("collect").classList.add("orange");
+
+  setTimeout(() => {
+    document.getElementById("collect").classList.remove("orange");
+    document.getElementById("collect").classList.add("green");
+
+    orderReady = true;
+
+    // Enable Collect button (GREEN / READY)
+    document.getElementById("collectBtn").style.display = "inline-block";
+  }, 3000);
+
+}, 13000);
+
+
+/* ---------------- CLICK: COLLECT ORDER ---------------- */
+function collectOrder() {
+  const collectDiv = document.getElementById("collect");
+  if (!collectDiv.classList.contains("green")) {
+    showMsg("Food is not prepared yet ❌");
+    return;
+  }
+
+  let history = JSON.parse(localStorage.getItem("history")) || [];
+  history[history.length - 1].status = "COLLECTED";
+  localStorage.setItem("history", JSON.stringify(history));
+
+  showMsg("Order collected successfully ✔️");
+  setTimeout(() => {
+    window.location.href = "rating.html";
+  }, 1200);
+}
+
+/* ---------------- CLICK: CANCEL ORDER ---------------- */
+function cancelOrder() {
+  const collectDiv = document.getElementById("collect");
+  if (!collectDiv.classList.contains("green")) {
+    showMsg("Food is not prepared yet ❌");
+    return;
+  }
+
+  let history = JSON.parse(localStorage.getItem("history")) || [];
+  const last = history[history.length - 1];
+  last.status = "CANCELLED";
+  localStorage.setItem("history", JSON.stringify(history));
+
+  showMsg("Order cancelled ✔️");
+  setTimeout(() => {
+    window.location.href = "cancel.html";
+  }, 1200);
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Order History</title>
+
+<style>
+
+body{
+  font-family: Arial;
+  text-align:center;
+  padding:20px;
+}
+
+/* TABLE STYLE */
+table{
+  width:100%;
+  max-width:600px;
+  margin:auto;
+  border-collapse: collapse;
+}
+
+th, td{
+  border:1px solid #ccc;
+  padding:10px;
+}
+
+th{
+  background:#f2f2f2;
+}
+
+/* STATUS COLORS */
+.collected{
+  color:green;
+  font-weight:bold;
+}
+
+.cancelled{
+  color:red;
+  font-weight:bold;
+}
+
+/* BUTTON */
+button{
+  margin-top:20px;
+  padding:12px;
+  background:#007bff;
+  color:white;
+  border:none;
+  border-radius:8px;
+  font-size:16px;
+  cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>Order History</h2>
+
+<table>
+<tr>
+<th>Date</th>
+<th>Time</th>
+<th>Amount (₹)</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+
+<tbody id="historyTable">
+</tbody>
+
+</table>
+
+<button onclick="goBack()">⬅ Back to payment Page</button>
+
+<script>
+
+let history = JSON.parse(localStorage.getItem("history")) || [];
+
+let table = "";
+
+history.forEach((order, index) => {
+
+  let dateTime = new Date(order.time);
+  let date = dateTime.toLocaleDateString();
+  let time = dateTime.toLocaleTimeString();
+
+  let status = order.status || "Collected";
+
+  table += `
+  <tr>
+    <td>${date}</td>
+    <td>${time}</td>
+    <td>${order.total}</td>
+    <td class="${status === 'Cancelled' ? 'cancelled' : 'collected'}">
+      ${status}
+    </td>
+    <td>
+      <button onclick="cancelOrder(${index})">Cancel</button>
+    </td>
+  </tr>
+  `;
+});
+
+document.getElementById("historyTable").innerHTML = table;
+
+
+// CANCEL ORDER
+function cancelOrder(index){
+
+  let history = JSON.parse(localStorage.getItem("history")) || [];
+
+  history[index].status = "Cancelled";
+
+  localStorage.setItem("history", JSON.stringify(history));
+
+  location.reload();
+}
+
+
+// BACK BUTTON
+function goBack(){
+  window.location.href = "payment.html";
+}
+
+</script>
+
+</body>
+</html>

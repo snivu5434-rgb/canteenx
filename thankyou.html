@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Thank You</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#bdd4f3; /* navy blue */
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+/* main card */
+.box{
+  background:white;
+  padding:30px;
+  border-radius:15px;
+  text-align:center;
+  width:90%;
+  max-width:420px;
+  box-shadow:0 0 20px rgba(0,0,0,0.3);
+}
+
+/* title */
+h1{
+  font-size:32px;
+  color:#4b8fe9;
+  margin-bottom:10px;
+}
+
+/* emoji line */
+.big-emoji{
+  font-size:45px;
+  margin:10px 0;
+}
+
+/* text */
+p{
+  font-size:16px;
+  font-weight:500; /* medium bold */
+  color:#e22f2f;
+}
+
+/* button */
+button{
+  margin-top:20px;
+  padding:12px 20px;
+  border:none;
+  border-radius:30px;
+  background:pink;
+  color:black;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+}
+
+/* home icon */
+button img{
+  width:20px;
+  height:20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+  <h1>THANK YOU 🎉</h1>
+
+  <div class="big-emoji">🙏😊</div>
+
+  <p>🍽️ Don’t waste food</p>
+  <p>✔️ Take only what you can eat</p>
+  <p>💙 Thank you for your order</p>
+
+  <button onclick="goHome()">
+    <img src="https://cdn-icons-png.flaticon.com/512/25/25694.png">
+    Back to Menu
+  </button>
+
+</div>
+
+<script>
+function goHome(){
+  window.location.href = "menu.html"; // change if your menu page name differs
+}
+</script>
+
+</body>
+</html>
