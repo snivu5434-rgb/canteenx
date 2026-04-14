@@ -2,7 +2,15 @@
 <html>
 <head>
 <title>Login</title>
-
+  
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0d6efd">
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js');
+}
+</script>
+  
 <style>
 body{
   font-family: Arial;
